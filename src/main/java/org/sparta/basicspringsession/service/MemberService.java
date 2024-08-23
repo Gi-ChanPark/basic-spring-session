@@ -1,6 +1,6 @@
 package org.sparta.basicspringsession.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.sparta.basicspringsession.entity.Member;
 import org.sparta.basicspringsession.repository.MemberRepository;
@@ -36,5 +36,25 @@ public class MemberService {
         return dtoList;
     }
 
+    public MemberDetailResponseDto getMember(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NullPointerException("맴버가 없습니다."));
 
+        return new MemberDetailResponseDto(member.getId(), member.getName());
+    }
+
+    @Transactional
+    public MemberUpdateResponseDto updateMember(Long memberId, MemberUpdateRequestDto requestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NullPointerException("맴버가 없습니다."));
+
+        member.update(requestDto.getName());
+
+        return  new MemberUpdateResponseDto(member.getId(), member.getName());
+    }
+
+    @Transactional
+    public void deleteMember(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NullPointerException("맴버가 없습니다."));
+
+        memberRepository.delete(member);
+    }
 }

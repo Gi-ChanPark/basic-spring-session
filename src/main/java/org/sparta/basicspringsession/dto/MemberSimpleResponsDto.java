@@ -8,6 +8,7 @@ public class MemberSimpleResponsDto {
     private final String name;
 
     public MemberSimpleResponsDto(String name) {
+
         this.name = name;
     }
 }
